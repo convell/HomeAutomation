@@ -1,0 +1,18 @@
+- hosts: dolandog
+  remote_user: paul
+  tasks:
+    - name: Check hostname
+      command: hostname
+    - name: Copy docker-compose yaml to remote
+      copy:
+        src: ../../docker-compose.yml
+        dest: /var/services/homes/ansible/docker-compose.yml
+        owner: paul
+        group: users
+        mode: 0644
+    - name: Docker-compose up on remote
+      become_user: paul
+      become: true
+      command:
+        cmd: /usr/local/bin/docker-compose up -d
+        chdir: /var/services/homes/ansible
